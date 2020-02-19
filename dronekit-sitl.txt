@@ -1,0 +1,40 @@
+*** start simultaion:
+1-  
+dronekit-sitl copter --home=35.9835973,-95.8742309,0,180
+2-  
+python "D:\teknofest iha\dronekit\mavproxy.py" --master  tcp:127.0.0.1:5760 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14550
+
+	!!!portlara dikkat et!!! 
+	[mainsystem'de 2.maddedeki out portlarý kullanýlacak]
+
+*** for system testing:
+3-
+python -i mainsystem.py
+4-
+python imagezmqdinleyicijpg.py
+
+*** to control the copter:
+5- python script: 
+	[!!!] bunlar temel komutlar. stabil çalýþmasý [!!!]
+	[!!!] için ekstra komutlar eklenmeli.	    [!!!]
+	[https://dronekit-python.readthedocs.io/en/latest/examples/simple_goto.html]
+	[control_drone.py]
+from dronekit import connect, VehicleMode, LocationGlobalRelative  #import
+import time				#sleep functionality
+v = connect("127.0.0.1:14551")		#connect to one of the outs specified above
+v.mode = VehicleMode("GUIDED")		#change mode
+v.armed = True				#arm the vehicle
+v.simple_takeoff(50)			#change altitude
+v.airspeed = 5			#set speed
+dest = LocationGlobalRelative(20.361354, 145.165218, 20)	#set destination pt
+v.simple_goto(dest)		# go to destination point
+time.sleep(30)				#wait
+v.mode = VehicleMode("RTL")		#Return to launch
+time.sleep(30)				#wait
+v.close()				#done.					
+
+
+
+
+### appleren-the-original
+### all rights reserved
